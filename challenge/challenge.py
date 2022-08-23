@@ -33,7 +33,8 @@ class HourlyTask:
 
         self.latest_done = when
         self.earliest_done = when
-        raise NotImplementedError("Fill me in!")
+
+        #raise NotImplementedError("Fill me in!")
 
 
 class Scheduler:
@@ -56,6 +57,15 @@ class Scheduler:
         now = datetime.utcnow().replace(minute=0, second=0, microsecond=0)
         return [task for task in self.task_store if not task.latest_done and task.start_from < now]
 
+
+    def tasks_tracker(self, when: datetime, task: HourlyTask) -> None:
+        """Track/update task markers. Stop task at, if repeat_untile set"""
+        if task.latest_done and not task.repeat_until:
+            task.latest_done = when
+        elif task.repeat_until and task.repeat_until > task.latest_done:
+            task.latest_done = when
+
+
     def schedule_tasks(self) -> None:
         """Schedule the tasks.
 
@@ -67,7 +77,7 @@ class Scheduler:
         now_hour_start = now.replace(minute=0, second=0, microsecond=0)
         last_hour_start = now_hour_start - timedelta(hours=1)
         [task.schedule(last_hour_start) for task in tasks]
-
+        [self.tasks_tracker(last_hour_start, task) for task in self.task_store]
 
 @dataclass
 class Controller:
