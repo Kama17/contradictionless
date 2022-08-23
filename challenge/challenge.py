@@ -55,7 +55,11 @@ class Scheduler:
     def get_tasks_to_do(self) -> List[HourlyTask]:
         """Get the list of tasks that need doing."""
         now = datetime.utcnow().replace(minute=0, second=0, microsecond=0)
-        return [task for task in self.task_store if not task.latest_done and task.start_from < now]
+        # Return all tasks that need doing
+        tasks_need_doing = [task for task in self.task_store if not task.latest_done and task.start_from < now]
+        # Sort task in descending order
+        tasks_need_doing.sort(key = lambda x_task: x_task.start_from, reverse = True)
+        return tasks_need_doing
 
 
     def tasks_tracker(self, when: datetime, task: HourlyTask) -> None:
