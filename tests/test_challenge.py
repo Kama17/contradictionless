@@ -42,6 +42,15 @@ class TestScheduler(TestCase):
 
     def test_can_find_todos_with_most_recent_first(self):
         """Check found tasks are in order of most recent -> most historic."""
+        sch = Scheduler()
+        with freeze_time(datetime(2022, 8, 22, 18, 15)):
+            first = HourlyTask(start_from = datetime(2022, 8, 22, 17, 25))
+            second = HourlyTask(start_from = datetime(2022, 8, 22, 16, 50))
+            last = HourlyTask(start_from = datetime(2022, 8, 22, 15, 10))
+            sch.register_tasks([second, first, last])
+            most_recent_tasks = sch.get_tasks_to_do()
+            correct_order = [first, second, last]
+            self.assertListEqual(correct_order, most_recent_tasks)
 
 
 class TestController(TestCase):
