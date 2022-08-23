@@ -50,7 +50,8 @@ class Scheduler:
 
     def get_tasks_to_do(self) -> List[HourlyTask]:
         """Get the list of tasks that need doing."""
-        return []
+        now = datetime.utcnow().replace(minute=0, second=0, microsecond=0)
+        return [task for task in self.task_store if not task.latest_done and task.start_from < now]
 
     def schedule_tasks(self) -> None:
         """Schedule the tasks.
