@@ -24,7 +24,9 @@ class HourlyTask:
     @property
     def next_to_do(self) -> Union[datetime, None]:
         """Return the next datetime that needs doing."""
-        raise NotImplementedError("Fill me in!")
+        next_datatime = datetime.utcnow().replace(minute=0, second=0,microsecond=0)
+
+        #raise NotImplementedError("Fill me in!")
 
     def schedule(self, when: datetime) -> None:
         """Schedule this task at the 'when' time, update local time markers."""
