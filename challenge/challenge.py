@@ -30,6 +30,9 @@ class HourlyTask:
 
     def schedule(self, when: datetime) -> None:
         """Schedule this task at the 'when' time, update local time markers."""
+
+        self.latest_done = when
+        self.earliest_done = when
         raise NotImplementedError("Fill me in!")
 
 
