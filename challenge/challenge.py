@@ -61,7 +61,7 @@ class Scheduler:
         """
         tasks = self.get_tasks_to_do()
         now = datetime.utcnow()
-        now_hour_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        now_hour_start = now.replace(minute=0, second=0, microsecond=0)
         last_hour_start = now_hour_start - timedelta(hours=1)
         [task.schedule(last_hour_start) for task in tasks]
 
